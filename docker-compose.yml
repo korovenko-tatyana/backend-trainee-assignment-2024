@@ -11,10 +11,13 @@ services:
       context: ./api
     environment:
       DATABASE_URL: "pgsql://test:test@postgres:5432/avito"
+      REDIS_PASS: redis
+      REDIS_PORT: 6379
     volumes:
       - "./api:/api"
     depends_on:
       - postgres
+      - redis
     networks:
       - net
 
@@ -46,5 +49,23 @@ services:
     networks:
       - net
 
+  redis:
+    container_name: avito_redis
+    image: redis
+    restart: unless-stopped
+    command:
+      - "redis-server"
+      - "--requirepass"
+      - "redis"
+      - "--maxmemory"
+      - "256M"
+      - "--maxmemory-policy"
+      - "volatile-lfu"
+    networks:
+      - net
+    volumes:
+      - redis-data:/data
+
 volumes:
   pg-data:
+  redis-data:

@@ -45,6 +45,18 @@ class BannerRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function searchByFeature(int $feature): array
+    {
+        $qb = $this->createQueryBuilder('b')
+        ->orderBy('b.id', 'ASC')
+        ->innerJoin('App\Entity\SearchBanner', 'sb', Join::WITH, 'b.id = sb.banner')
+        ->andWhere('sb.feature_id = :feature')
+        ->setParameter('feature', $feature);
+
+        return $qb->getQuery()
+            ->execute();
+    }
+
     public function delete(int $id)
     {
         return $this->createQueryBuilder('b')

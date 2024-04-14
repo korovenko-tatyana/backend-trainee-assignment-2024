@@ -32,4 +32,14 @@ class SearchBannerRepository extends ServiceEntityRepository
           ->getQuery()
           ->execute();
     }
+
+    public function deleteMany(int $featureId)
+    {
+        return $this->createQueryBuilder('sb')
+          ->delete()
+          ->where('sb.feature_id = :feature')
+          ->setParameter('feature', $featureId)
+          ->getQuery()
+          ->execute();
+    }
 }

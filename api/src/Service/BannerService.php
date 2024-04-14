@@ -16,11 +16,13 @@ use App\Repository\TagRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Message\DeleteNotification;
 
 class BannerService
 {
@@ -115,6 +117,11 @@ class BannerService
         }
 
         $this->transactionDelete($findBanner);
+    }
+
+    public function deleteMany(int $feature_id, MessageBusInterface $bus)
+    {
+        $bus->dispatch(new DeleteNotification("$feature_id"));
     }
 
     private function getContent(bool $useLastRevision, int $tagId, int $featureId)
