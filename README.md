@@ -31,7 +31,7 @@ php bin/console doctrine:fixtures:load
 
 ---------------
 
-Тут скачать постман-коллекция с запросами и импортировать ее в Postman:
+Тут скачать постман-коллекцию с запросами и импортировать ее в Postman:
 
 https://drive.google.com/file/d/15-xvaIk8GuWBxQsUYcGuEJElPIzp4dcP/view?usp=drive_link
 
@@ -69,4 +69,4 @@ php bin/phpunit
 
 - У запроса GET /user_banner нет ошибки 403 - так как в условии нет других токенов, кроме токена пользователя и токена админа и для этого запроса они оба подходят
 - У запроса DELETE /banner/{id} нет ошибки 400 - так как по сути нет некорректных данных
-- Доп задачие 6 - "Описать конфигурацию линтера". Использую пакеты friendsofphp/php-cs-fixer и squizlabs/php_codesniffer. Возможно, это считается за выполненное задание
+- Доп задача 6 - "Описать конфигурацию линтера". Использую пакеты friendsofphp/php-cs-fixer и squizlabs/php_codesniffer. Возможно, это считается за выполненное задание
