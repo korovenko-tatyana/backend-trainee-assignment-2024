@@ -1,0 +1,50 @@
+version: '3.7'
+
+networks:
+  net:
+    driver: bridge
+
+services:
+  api:
+    container_name: avito_api
+    build:
+      context: ./api
+    environment:
+      DATABASE_URL: "pgsql://test:test@postgres:5432/avito"
+    volumes:
+      - "./api:/api"
+    depends_on:
+      - postgres
+    networks:
+      - net
+
+  nginx:
+    container_name: avito_nginx
+    build:
+      context: ./api/nginx
+    restart: always
+    ports:
+      - "8000:80"
+    volumes:
+      - "./api:/api"
+    depends_on:
+      - api
+    networks:
+      - net
+  
+  postgres:
+    container_name: avito_pg
+    image: "postgres:13-alpine"
+    volumes:
+      - "pg-data:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_USER=test
+      - POSTGRES_DB=avito
+    networks:
+      - net
+
+volumes:
+  pg-data:
